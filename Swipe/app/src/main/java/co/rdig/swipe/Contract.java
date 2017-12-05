@@ -5,5 +5,5 @@ import android.net.Uri;
 
 public class Contract {
 
-    public static final Uri BASE_URI = Uri.parse("https://ryzd44f0a8.execute-api.us-east-1.amazonaws.com/api");
+    public static final Uri BASE_URI = Uri.parse("https://hytapmq581.execute-api.us-east-1.amazonaws.com/dev");
 }

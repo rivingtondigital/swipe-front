@@ -3,15 +3,15 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:padding="@dimen/padding"
     android:orientation="horizontal"
     android:gravity="center"
     >
 
-    <ImageView
-        android:layout_width="300dp"
-        android:layout_height="200dp"
+    <WebView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:id="@+id/image_swipe_item"
         android:gravity="center"
         />

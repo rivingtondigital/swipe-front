@@ -117,7 +117,9 @@ public class MainActivity extends AppCompatActivity {
             URL url = null;
 
             try {
-                url = new URL(Contract.BASE_URI.toString());
+                String path = Contract.BASE_URI.toString();
+                path += "/sets/list";
+                url = new URL(path);
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             }

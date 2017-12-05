@@ -35,7 +35,7 @@ public class SwipeActivity extends AppCompatActivity {
     private SwipeAdapter adapter;
 
     private String[] choices;
-    private String contentUriString;
+    private String contentString;
 
     private String stringJson;
 
@@ -116,7 +116,7 @@ public class SwipeActivity extends AppCompatActivity {
         tvLeft.setText(choices[0]);
         tvRight.setText(choices[1]);
 
-        InfoForSwipeItem infoForSwipeItem = new InfoForSwipeItem(contentUriString, choices);
+        InfoForSwipeItem infoForSwipeItem = new InfoForSwipeItem(contentString, choices);
 
         adapter.swap(infoForSwipeItem);
     }
@@ -162,13 +162,9 @@ public class SwipeActivity extends AppCompatActivity {
 
                 JSONObject qcardJsonObject = jsonObject.getJSONObject("qcard");
 
-                String contentString = qcardJsonObject.getString("content");
+                contentString = qcardJsonObject.getString("content");
 
-                contentUriString = getUrlFromString(contentString);
-
-                JSONObject qsetJsonObject = qcardJsonObject.getJSONObject("q_set");
-
-                JSONArray choicesJsonArray = qsetJsonObject.getJSONArray("choices");
+                JSONArray choicesJsonArray = qcardJsonObject.getJSONArray("choices");
 
                 choices = new String[choicesJsonArray.length()];
 
@@ -186,7 +182,11 @@ public class SwipeActivity extends AppCompatActivity {
             URL url = null;
 
             try {
-                url = new URL(Contract.BASE_URI.toString() + "/card/" + params[0]);
+                String qset = params[0];
+                String userid = params[1];
+                String path = Contract.BASE_URI.toString();
+                path += "/cards/fetch/" + qset + '/' + userid;
+                url = new URL(path);
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             }
@@ -195,7 +195,6 @@ public class SwipeActivity extends AppCompatActivity {
             urlConnection.setRequestMethod("GET");
             urlConnection.setRequestProperty("x-api-key",
                                     getResources().getString(R.string.x_api_key_value));
-            urlConnection.setRequestProperty("user-id", params[1]);
 
             try {
 
@@ -217,26 +216,6 @@ public class SwipeActivity extends AppCompatActivity {
             } finally {
                 urlConnection.disconnect();
             }
-        }
-
-        String getUrlFromString(String string) {
-
-            String result = "";
-
-            int i = 0;
-
-            while (string.charAt(i) != '\'')
-                i++;
-
-            i++;
-
-            while (string.charAt(i) != '\'') {
-
-                result = result + string.charAt(i);
-                i++;
-            }
-
-            return result;
         }
 
         @Override
@@ -263,7 +242,7 @@ public class SwipeActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-            Log.d(TAG, responseJson);
+            Log.d(TAG, "hi"+responseJson);
 
             return null;
         }
@@ -273,7 +252,7 @@ public class SwipeActivity extends AppCompatActivity {
             URL url = null;
 
             try {
-                url = new URL(Contract.BASE_URI.toString() + "/answer");
+                url = new URL(Contract.BASE_URI.toString() + "/cards/answer");
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             }

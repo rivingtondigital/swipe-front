@@ -2,22 +2,15 @@ package co.rdig.swipe;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.concurrent.ExecutionException;
+import android.webkit.WebView;
 
 
 
-public class SwipeAdapter extends RecyclerView.Adapter <SwipeAdapter.SwipeViewHolder>{
+public class SwipeAdapter extends RecyclerView.Adapter <SwipeAdapter.SwipeViewHolder> {
 
     Context context;
 
@@ -64,69 +57,16 @@ public class SwipeAdapter extends RecyclerView.Adapter <SwipeAdapter.SwipeViewHo
 
     class SwipeViewHolder extends RecyclerView.ViewHolder {
 
-        ImageView imageView;
+        WebView webView;
 
         public SwipeViewHolder(View itemView) {
             super(itemView);
 
-            imageView = (ImageView) itemView.findViewById(R.id.image_swipe_item);
+            webView = (WebView) itemView.findViewById(R.id.image_swipe_item);
         }
 
         public void bind(String content, String[] choices) {
-
-            URL url = null;
-
-            try {
-                url = new URL(content);
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            }
-
-            ThirdTask task = new ThirdTask();
-            task.execute(url);
-
-            try {
-                task.get();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            }
-
-            imageView.setImageDrawable(drawable);
-        }
-    }
-
-    // download picture from net and set it on screen
-    private class ThirdTask extends AsyncTask<URL, Void, Void> {
-
-        @Override
-        protected Void doInBackground(URL... params) {
-
-            drawable = null;
-
-            try {
-
-                drawable = getContent(params[0]);
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            return null;
-        }
-
-        Drawable getContent(URL url) throws IOException {
-
-            InputStream in = (InputStream) url.getContent();
-            Drawable d = Drawable.createFromStream(in, "src");
-
-            return d;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
+            webView.loadData(content, "text/html", null);
         }
     }
 }
